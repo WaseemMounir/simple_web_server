@@ -1,0 +1,40 @@
+
+- name: install nginx on ubuntu
+  apt: 
+    name: nginx 
+    state: latest 
+    update_cache: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify:
+    - start nginx
+    - upgrade apt packages
+
+- name: install nginx on centos
+  yum: 
+    name: nginx
+    state: latest 
+    update_cache: 'true'
+  when: ansible_facts['distribution'] == 'CentOS'
+  notify:
+    - start nginx
+
+- name: Copy Nginx configuration file
+  copy:
+    src: ./nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nginx
+
+    # - name: Ensure Nginx is running
+    #   systemd:
+    #     name: nginx
+    #     state: started
+    #     enabled: yes
+
+- name: Copy custom webpage files
+  ansible.builtin.copy:
+    src: /home/ansible/simple_web_server/my_roles/files/webpage/assignment-03-WP-Pusher/
+    dest: /var/www/html/
+    mode: '0755'

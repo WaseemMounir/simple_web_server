@@ -1,0 +1,7 @@
+
+#- name: start nginx
+  #service: name=nginx enables=yes state=started
+- name: upgrade apt packages
+  apt: state=latest force_apt_get=yes
+- name: restart nginx
+  service: name=nginx state=restarted

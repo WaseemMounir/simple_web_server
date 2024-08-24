@@ -1,0 +1,9 @@
+---
+- name: install web server
+  hosts: all
+  roles: 
+    - my_roles
+  
+
+  
+...
